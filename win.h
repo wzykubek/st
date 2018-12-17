@@ -1,4 +1,4 @@
-/* See LICENSE for license details. */
+// See LICENSE for license details.
 
 enum win_mode {
 	MODE_VISIBLE     = 1 << 0,
@@ -23,7 +23,7 @@ enum win_mode {
 	                  |MODE_MOUSEMANY,
 };
 
-/* alpha */
+// alpha
 #define OPAQUE 0Xff
 #define USE_ARGB (alpha != OPAQUE && opt_embed == NULL)
 
@@ -40,3 +40,5 @@ void xsetmode(int, unsigned int);
 void xsetpointermotion(int);
 void xsetsel(char *);
 int xstartdraw(void);
+
+// vim: filetype=c

@@ -1,77 +1,79 @@
-# Luke's build of st - the simple (suckless) terminal
+# st - simple terminal
 
-The [suckless terminal (st)](https://st.suckless.org/) with some additional features:
+This project is fork of [st (simple terminal)](https://st.suckless.org/) with some additional features:
 
-+ Compatibility with `Xresources` and `pywal` for dynamic colors.
-+ Default [gruvbox](https://github.com/morhetz/gruvbox) colors otherwise.
-+ Transparency/alpha, which is also adjustable from `~/.Xresources`.
-+ Default font is system "mono" at 16pt, meaning the font will match your system font.
-+ Very useful keybinds including:
-	+ Copy is alt-c, paste is alt-v or alt-p pastes from primary selection
-	+ Alt-l feeds all urls on screen to dmenu, so they user can choose and
-	  follow one (requires xurls and dmenu installed).
-	+ Zoom in/out or increase font size with Alt+Shift+k/j or u/d for larger intervals.
-	+ Hold alt and press either ↑/↓ or the vim keys k/j to move up/down in the terminal.
-	+ Shift+Mouse wheel do the same.
-	+ Alt-u and Alt-d scroll back/forward in history a page at a time.
-	+ Alt-PageUp and Alt-PageDown will do the same.
-+ Vertcenter
-+ Scrollback
-+ updated to latest version 0.8.1
+* Compatibility with `Xresources` and `pywal` for dynamic colors.
+* Default and as fallback [biual](https://gitlab.com/dawidpotocki/biual) colors otherwise.
+* Transparency/alpha support, which is also adjustable from `~/.Xresources`.
+* Default font is system "`mono`" at 15pt, meaning the font will match your system font.
+* [Useful keybindings](#keybindings) for everyday use
 
-The following additional bindings were added before I forked this:
+## Installation
 
-+ Scroll through history -- Shift+PageUp/PageDown or Shift+Mouse wheel
-+ Increase/decrease font size -- Shift+Alt+PageUp/PageDown
-+ Return to default font size -- Shift+Alt+Home
-+ Paste -- Shift+Insert
+Make sure you have [dependencies](#dependencies) installed before you install st.
 
-## Installation for newbs
-
-```
-make
-sudo make install
+```shell
+$ git clone https://gitlab.com/dawidpotocki/st
+$ cd st
+$ sudo make clean install
 ```
 
-Obviously, `make` is required to build. `fontconfig` is required for the
-default build, since it asks `fontconfig` for your system monospace font.  It
-might be obvious, but `libX11` and `libXft` are required as well. Chances are,
-you have all of this installed already.
+On OpenBSD, be sure to edit `config.mk` first and remove `-lrt` from the `$LIBS` before compiling.
 
-On OpenBSD, be sure to edit `config.mk` first and remove `-lrt` from the
-`$LIBS` before compiling.
+### Dependencies 
 
-## How to configure dynamically with Xresrouces
+Probably you have some required packages on your system already. "No" means that it is recommended as it is needed for some patches, but they aren't needed to make `st` work.
+
+| Required? | Package name | Description
+|-----------|--------------|------------
+| Yes       | git          | Distributed version control system
+| Yes       | make         | Build utility
+| Yes       | libx11       | X11 client-side library
+| Yes       | libxft       | FreeType-based font drawing library for X
+| Yes/No    | fontconfig   | Library for configuring fonts, required for default build as it asks for your system `mono` font
+| No        | dmenu        | Generic menu for X, used for selecting urls and for entering unicode codepoint to convert it to glyph which will be pasted into st
+| No        | xurls        | Extract urls from plain text, used together with dmenu to select urls
+
+## Keybindings
+
+###### Clipboard
+* `Ctrl+Shift+c` - Copy from clipboard
+* `Ctrl+Shift+v` - Paste from clipbard
+* `Ctrl+Shift+p` - Paste from primary selection
+
+###### Scroll
+* `Ctrl+k/j/↑/↓` - Scroll one line back/forward
+* `Shift+Scroll` - Scroll using mouse back/forward
+* `Ctrl+u/d/PageUp/PageDown` - Scroll one page back/forward
+
+###### Resize
+* `Ctrl+Shift+k/j/↑/↓` - Increase/decrese font size
+* `Ctrl+Shift+d/u` - Increase/decrese font by larger interval
+* `Ctrl+Home` - Return to default font size
+
+###### Others
+* `Ctrl+Shift+l` - Pipe all urls from `st` to `dmenu`, so you can open url in your `$BROWSER` without need for manual copying url.
+* `Ctrl+Shift+i` - Will open `dmenu` and ask you to enter a unicode codepoint that will be converted to a glyph and then pushed to `st`.
+
+## Xresources
 
 For many key variables, this build of `st` will look for X settings set in
 either `~/.Xdefaults` or `~/.Xresources`. You must run `xrdb` on one of these
-files to load the settings.
+files to load the settings, for example: `xrdb ~/.Xresources`.
 
 For example, you can define your desired fonts, transparency or colors:
 
 ```
-*.font:	Liberation Mono:pixelsize=12:antialias=true:autohint=true;
+*.background: #0a0a30
+*.foreground: #9b9cb5
 *.alpha: 150
-*.color0: #111
-...
+
+*.color0:     #0a0a30
+*.color1:     #aa2f46
+…
+
+*.font:	Liberation Mono:pixelsize=12:antialias=true:autohint=true
 ```
 
 The `alpha` value (for transparency) goes from `0` (transparent) to `255`
 (opaque).
-
-### Colors
-
-To be clear about the color settings:
-
-- This build will use gruvbox colors by default and as a fallback.
-- If there are Xresources colors defined, those will take priority.
-- But if `wal` has run in your session, its colors will take priority.
-
-Note that when you run `wal`, it will negate the transparency of existing
-windows, but new windows will continue with the previously defined
-transparency.
-
-## Contact
-
-- Luke Smith <luke@lukesmith.xyz>
-- [https://lukesmith.xyz](https://lukesmith.xyz)

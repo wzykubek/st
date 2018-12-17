@@ -1,4 +1,4 @@
-/* See LICENSE for license details. */
+// See LICENSE for license details.
 #include <ctype.h>
 #include <errno.h>
 #include <fcntl.h>
@@ -28,7 +28,7 @@
  #include <libutil.h>
 #endif
 
-/* Arbitrary sizes */
+// Arbitrary sizes
 #define UTF_INVALID   0xFFFD
 #define UTF_SIZ       4
 #define ESC_BUF_SIZ   (128*UTF_SIZ)
@@ -36,7 +36,7 @@
 #define STR_BUF_SIZ   ESC_BUF_SIZ
 #define STR_ARG_SIZ   ESC_ARG_SIZ
 
-/* macros */
+// macros
 #define IS_SET(flag)		((term.mode & (flag)) != 0)
 #define NUMMAXLEN(x)		((int)(sizeof(x) * 2.56 + 0.5) + 1)
 #define ISCONTROLC0(c)		(BETWEEN(c, 0, 0x1f) || (c) == '\177')
@@ -44,7 +44,7 @@
 #define ISCONTROL(c)		(ISCONTROLC0(c) || ISCONTROLC1(c))
 #define ISDELIM(u)		(utf8strchr(worddelimiters, u) != NULL)
 
-/* constants */
+// constants
 #define ISO14755CMD		"dmenu -w \"$WINDOWID\" -p codepoint: </dev/null"
 
 enum term_mode {
@@ -82,16 +82,16 @@ enum charset {
 enum escape_state {
 	ESC_START      = 1,
 	ESC_CSI        = 2,
-	ESC_STR        = 4,  /* OSC, PM, APC */
+	ESC_STR        = 4,  // OSC, PM, APC
 	ESC_ALTCHARSET = 8,
-	ESC_STR_END    = 16, /* a final string was encountered */
-	ESC_TEST       = 32, /* Enter in test mode */
+	ESC_STR_END    = 16, // a final string was encountered
+	ESC_TEST       = 32, // Enter in test mode
 	ESC_UTF8       = 64,
 	ESC_DCS        =128,
 };
 
 typedef struct {
-	Glyph attr; /* current char attributes */
+	Glyph attr; // current char attributes
 	int x;
 	int y;
 	char state;
@@ -115,48 +115,48 @@ typedef struct {
 	int alt;
 } Selection;
 
-/* Internal representation of the screen */
+// Internal representation of the screen
 typedef struct {
-	int row;      /* nb row */
-	int col;      /* nb col */
-	Line *line;   /* screen */
-	Line *alt;    /* alternate screen */
-	Line hist[HISTSIZE]; /* history buffer */
-	int histi;    /* history index */
-	int scr;      /* scroll back */
-	int *dirty;   /* dirtyness of lines */
-	TCursor c;    /* cursor */
-	int ocx;      /* old cursor col */
-	int ocy;      /* old cursor row */
-	int top;      /* top    scroll limit */
-	int bot;      /* bottom scroll limit */
-	int mode;     /* terminal mode flags */
-	int esc;      /* escape state flags */
-	char trantbl[4]; /* charset table translation */
-	int charset;  /* current charset */
-	int icharset; /* selected charset for sequence */
+	int row;         // nb row
+	int col;         // nb col
+	Line *line;      // screen
+	Line *alt;       // alternate screen 
+	Line hist[HISTSIZE]; // history buffer
+	int histi;       // history index
+	int scr;         // scroll back
+	int *dirty;      // dirtyness of lines
+	TCursor c;       // cursor
+	int ocx;         // old cursor col
+	int ocy;         // old cursor row
+	int top;         // top    scroll limit
+	int bot;         // bottom scroll limit
+	int mode;        // terminal mode flags
+	int esc;         // escape state flags
+	char trantbl[4]; // charset table translation
+	int charset;     // current charset
+	int icharset;    // selected charset for sequence
 	int *tabs;
 } Term;
 
-/* CSI Escape sequence structs */
-/* ESC '[' [[ [<priv>] <arg> [;]] <mode> [<mode>]] */
+/* CSI Escape sequence structs
+ * ESC '[' [[ [<priv>] <arg> [;]] <mode> [<mode>]] */
 typedef struct {
-	char buf[ESC_BUF_SIZ]; /* raw string */
-	int len;               /* raw string length */
+	char buf[ESC_BUF_SIZ]; // raw string
+	int len;               // raw string length
 	char priv;
 	int arg[ESC_ARG_SIZ];
-	int narg;              /* nb of args */
+	int narg;              // nb of args
 	char mode[2];
 } CSIEscape;
 
-/* STR Escape sequence structs */
-/* ESC type [[ [<priv>] <arg> [;]] <mode>] ESC '\' */
+/* STR Escape sequence structs
+ * ESC type [[ [<priv>] <arg> [;]] <mode>] ESC '\' */
 typedef struct {
-	char type;             /* ESC type ... */
-	char buf[STR_BUF_SIZ]; /* raw string */
-	int len;               /* raw string length */
+	char type;             // ESC type ...
+	char buf[STR_BUF_SIZ]; // raw string
+	int len;               // raw string length
 	char *args[STR_ARG_SIZ];
-	int narg;              /* nb of args */
+	int narg;              // nb of args
 } STREscape;
 
 static void execsh(char *, char **);
@@ -225,7 +225,7 @@ static char base64dec_getc(const char **);
 
 static ssize_t xwrite(int, const char *, size_t);
 
-/* Globals */
+// Globals
 static Term term;
 static Selection sel;
 static CSIEscape csiescseq;
@@ -507,7 +507,7 @@ selnormalize(void)
 	selsnap(&sel.nb.x, &sel.nb.y, -1);
 	selsnap(&sel.ne.x, &sel.ne.y, +1);
 
-	/* expand selection over line breaks */
+	// expand selection over line breaks
 	if (sel.type == SEL_RECTANGULAR)
 		return;
 	i = tlinelen(sel.nb.y);
@@ -619,7 +619,7 @@ getsel(void)
 	bufsize = (term.col+1) * (sel.ne.y-sel.nb.y+1) * UTF_SIZ;
 	ptr = str = xmalloc(bufsize);
 
-	/* append every set & selected glyph to the selection */
+	// append every set & selected glyph to the selection
 	for (y = sel.nb.y; y <= sel.ne.y; y++) {
 		if ((linelen = tlinelen(y)) == 0) {
 			*ptr++ = '\n';
@@ -738,8 +738,10 @@ sigchld(int a)
 	if (pid != p)
 		return;
 
-	if (!WIFEXITED(stat) || WEXITSTATUS(stat))
-		die("child finished with error '%d'\n", stat);
+	if (WIFEXITED(stat) && WEXITSTATUS(stat))
+		die("child exited with status %d\n", WEXITSTATUS(stat));
+	else if (WIFSIGNALED(stat))
+		die("child terminated due to signal %d\n", WTERMSIG(stat));
 	exit(0);
 }
 
@@ -790,7 +792,7 @@ ttynew(char *line, char *cmd, char *out, char **args)
 		return cmdfd;
 	}
 
-	/* seems to work fine on linux, openbsd and freebsd */
+	// seems to work fine on linux, openbsd and freebsd
 	if (openpty(&m, &s, NULL, NULL, NULL) < 0)
 		die("openpty failed: %s\n", strerror(errno));
 
@@ -800,7 +802,7 @@ ttynew(char *line, char *cmd, char *out, char **args)
 		break;
 	case 0:
 		close(iofd);
-		setsid(); /* create a new process group */
+		setsid(); // create a new process group
 		dup2(s, 0);
 		dup2(s, 1);
 		dup2(s, 2);
@@ -827,14 +829,14 @@ ttyread(void)
 	int written;
 	int ret;
 
-	/* append read bytes to unprocessed bytes */
+	// append read bytes to unprocessed bytes
 	if ((ret = read(cmdfd, buf+buflen, LEN(buf)-buflen)) < 0)
 		die("Couldn't read from shell: %s\n", strerror(errno));
 	buflen += ret;
 
 	written = twrite(buf, buflen, 0);
 	buflen -= written;
-	/* keep any uncomplete utf8 char for the next call */
+	// keep any uncomplete utf8 char for the next call
 	if (buflen > 0)
 		memmove(buf, buf + written, buflen);
 
@@ -860,7 +862,7 @@ ttywrite(const char *s, size_t n, int may_echo)
 		return;
 	}
 
-	/* This is similar to how the kernel handles ONLCR for ttys */
+	// This is similar to how the kernel handles ONLCR for ttys
 	while (n > 0) {
 		if (*s == '\r') {
 			next = s + 1;
@@ -919,7 +921,7 @@ ttywriteraw(const char *s, size_t n)
 				n -= r;
 				s += r;
 			} else {
-				/* All bytes have been written. */
+				// All bytes have been written.
 				break;
 			}
 		}
@@ -948,7 +950,7 @@ ttyresize(int tw, int th)
 void
 ttyhangup()
 {
-	/* Send SIGHUP to shell */
+	// Send SIGHUP to shell
 	kill(pid, SIGHUP);
 }
 
@@ -1222,7 +1224,7 @@ csiparse(void)
 	csiescseq.mode[1] = (p < csiescseq.buf+csiescseq.len) ? *p : '\0';
 }
 
-/* for absolute user moves, when decom is set */
+// for absolute user moves, when decom is set
 void
 tmoveato(int x, int y)
 {
@@ -1249,15 +1251,15 @@ tmoveto(int x, int y)
 void
 tsetchar(Rune u, Glyph *attr, int x, int y)
 {
-	static char *vt100_0[62] = { /* 0x41 - 0x7e */
-		"↑", "↓", "→", "←", "█", "▚", "☃", /* A - G */
-		0, 0, 0, 0, 0, 0, 0, 0, /* H - O */
-		0, 0, 0, 0, 0, 0, 0, 0, /* P - W */
-		0, 0, 0, 0, 0, 0, 0, " ", /* X - _ */
-		"◆", "▒", "␉", "␌", "␍", "␊", "°", "±", /* ` - g */
-		"␤", "␋", "┘", "┐", "┌", "└", "┼", "⎺", /* h - o */
-		"⎻", "─", "⎼", "⎽", "├", "┤", "┴", "┬", /* p - w */
-		"│", "≤", "≥", "π", "≠", "£", "·", /* x - ~ */
+	static char *vt100_0[62] = { // 0x41 - 0x7e
+		"↑", "↓", "→", "←", "█", "▚", "☃", // A - G
+		0, 0, 0, 0, 0, 0, 0, 0, // H - O
+		0, 0, 0, 0, 0, 0, 0, 0, // P - W
+		0, 0, 0, 0, 0, 0, 0, " ", // X - _
+		"◆", "▒", "␉", "␌", "␍", "␊", "°", "±", // ` - g
+		"␤", "␋", "┘", "┐", "┌", "└", "┼", "⎺", // h - o
+		"⎻", "─", "⎼", "⎽", "├", "┤", "┴", "┬", // p - w
+		"│", "≤", "≥", "π", "≠", "£", "·", // x - ~
 	};
 
 	/*
@@ -1367,7 +1369,7 @@ tdefcolor(int *attr, int *npar, int l)
 	uint r, g, b;
 
 	switch (attr[*npar + 1]) {
-	case 2: /* direct color in RGB space */
+	case 2: // direct color in RGB space
 		if (*npar + 4 >= l) {
 			fprintf(stderr,
 				"erresc(38): Incorrect number of parameters (%d)\n",
@@ -1384,7 +1386,7 @@ tdefcolor(int *attr, int *npar, int l)
 		else
 			idx = TRUECOLOR(r, g, b);
 		break;
-	case 5: /* indexed color */
+	case 5: // indexed color
 		if (*npar + 2 >= l) {
 			fprintf(stderr,
 				"erresc(38): Incorrect number of parameters (%d)\n",
@@ -1397,10 +1399,10 @@ tdefcolor(int *attr, int *npar, int l)
 		else
 			idx = attr[*npar];
 		break;
-	case 0: /* implemented defined (only foreground) */
-	case 1: /* transparent */
-	case 3: /* direct color in CMY space */
-	case 4: /* direct color in CMYK space */
+	case 0: // implemented defined (only foreground)
+	case 1: // transparent
+	case 3: // direct color in CMY space
+	case 4: // direct color in CMYK space
 	default:
 		fprintf(stderr,
 		        "erresc(38): gfx attr %d unknown\n", attr[*npar]);
@@ -1443,9 +1445,9 @@ tsetattr(int *attr, int l)
 		case 4:
 			term.c.attr.mode |= ATTR_UNDERLINE;
 			break;
-		case 5: /* slow blink */
-			/* FALLTHROUGH */
-		case 6: /* rapid blink */
+		case 5: // slow blink
+			// FALLTHROUGH
+		case 6: // rapid blink
 			term.c.attr.mode |= ATTR_BLINK;
 			break;
 		case 7:
@@ -1504,7 +1506,8 @@ tsetattr(int *attr, int l)
 			} else {
 				fprintf(stderr,
 					"erresc(default): gfx attr %d unknown\n",
-					attr[i]), csidump();
+					attr[i]);
+				csidump();
 			}
 			break;
 		}
@@ -1535,67 +1538,67 @@ tsetmode(int priv, int set, int *args, int narg)
 	for (lim = args + narg; args < lim; ++args) {
 		if (priv) {
 			switch (*args) {
-			case 1: /* DECCKM -- Cursor key */
+			case 1: // DECCKM -- Cursor key
 				xsetmode(set, MODE_APPCURSOR);
 				break;
-			case 5: /* DECSCNM -- Reverse video */
+			case 5: // DECSCNM -- Reverse video
 				xsetmode(set, MODE_REVERSE);
 				break;
-			case 6: /* DECOM -- Origin */
+			case 6: // DECOM -- Origin
 				MODBIT(term.c.state, set, CURSOR_ORIGIN);
 				tmoveato(0, 0);
 				break;
-			case 7: /* DECAWM -- Auto wrap */
+			case 7: // DECAWM -- Auto wrap
 				MODBIT(term.mode, set, MODE_WRAP);
 				break;
-			case 0:  /* Error (IGNORED) */
-			case 2:  /* DECANM -- ANSI/VT52 (IGNORED) */
-			case 3:  /* DECCOLM -- Column  (IGNORED) */
-			case 4:  /* DECSCLM -- Scroll (IGNORED) */
-			case 8:  /* DECARM -- Auto repeat (IGNORED) */
-			case 18: /* DECPFF -- Printer feed (IGNORED) */
-			case 19: /* DECPEX -- Printer extent (IGNORED) */
-			case 42: /* DECNRCM -- National characters (IGNORED) */
-			case 12: /* att610 -- Start blinking cursor (IGNORED) */
+			case 0:  // Error (IGNORED)
+			case 2:  // DECANM -- ANSI/VT52 (IGNORED)
+			case 3:  // DECCOLM -- Column  (IGNORED)
+			case 4:  // DECSCLM -- Scroll (IGNORED)
+			case 8:  // DECARM -- Auto repeat (IGNORED)
+			case 18: // DECPFF -- Printer feed (IGNORED)
+			case 19: // DECPEX -- Printer extent (IGNORED)
+			case 42: // DECNRCM -- National characters (IGNORED)
+			case 12: // att610 -- Start blinking cursor (IGNORED)
 				break;
-			case 25: /* DECTCEM -- Text Cursor Enable Mode */
+			case 25: // DECTCEM -- Text Cursor Enable Mode
 				xsetmode(!set, MODE_HIDE);
 				break;
-			case 9:    /* X10 mouse compatibility mode */
+			case 9:    // X10 mouse compatibility mode
 				xsetpointermotion(0);
 				xsetmode(0, MODE_MOUSE);
 				xsetmode(set, MODE_MOUSEX10);
 				break;
-			case 1000: /* 1000: report button press */
+			case 1000: // 1000: report button press
 				xsetpointermotion(0);
 				xsetmode(0, MODE_MOUSE);
 				xsetmode(set, MODE_MOUSEBTN);
 				break;
-			case 1002: /* 1002: report motion on button press */
+			case 1002: // 1002: report motion on button press
 				xsetpointermotion(0);
 				xsetmode(0, MODE_MOUSE);
 				xsetmode(set, MODE_MOUSEMOTION);
 				break;
-			case 1003: /* 1003: enable all mouse motions */
+			case 1003: // 1003: enable all mouse motions
 				xsetpointermotion(set);
 				xsetmode(0, MODE_MOUSE);
 				xsetmode(set, MODE_MOUSEMANY);
 				break;
-			case 1004: /* 1004: send focus events to tty */
+			case 1004: // 1004: send focus events to tty
 				xsetmode(set, MODE_FOCUS);
 				break;
-			case 1006: /* 1006: extended reporting mode */
+			case 1006: // 1006: extended reporting mode
 				xsetmode(set, MODE_MOUSESGR);
 				break;
 			case 1034:
 				xsetmode(set, MODE_8BIT);
 				break;
-			case 1049: /* swap screen & set/restore cursor as xterm */
+			case 1049: // swap screen & set/restore cursor as xterm
 				if (!allowaltscreen)
 					break;
 				tcursor((set) ? CURSOR_SAVE : CURSOR_LOAD);
-				/* FALLTHROUGH */
-			case 47: /* swap screen */
+				// FALLTHROUGH
+			case 47: // swap screen
 			case 1047:
 				if (!allowaltscreen)
 					break;
@@ -1604,18 +1607,18 @@ tsetmode(int priv, int set, int *args, int narg)
 					tclearregion(0, 0, term.col-1,
 							term.row-1);
 				}
-				if (set ^ alt) /* set is always 1 or 0 */
+				if (set ^ alt) // set is always 1 or 0
 					tswapscreen();
 				if (*args != 1049)
 					break;
-				/* FALLTHROUGH */
+				// FALLTHROUGH
 			case 1048:
 				tcursor((set) ? CURSOR_SAVE : CURSOR_LOAD);
 				break;
-			case 2004: /* 2004: bracketed paste mode */
+			case 2004: // 2004: bracketed paste mode
 				xsetmode(set, MODE_BRCKTPASTE);
 				break;
-			/* Not implemented mouse modes. See comments there. */
+			// Not implemented mouse modes. See comments there.
 			case 1001: /* mouse highlight mode; can hang the
 				      terminal by design when implemented. */
 			case 1005: /* UTF-8 mouse mode; will confuse
@@ -1632,18 +1635,18 @@ tsetmode(int priv, int set, int *args, int narg)
 			}
 		} else {
 			switch (*args) {
-			case 0:  /* Error (IGNORED) */
+			case 0:  // Error (IGNORED)
 				break;
 			case 2:
 				xsetmode(set, MODE_KBDLOCK);
 				break;
-			case 4:  /* IRM -- Insertion-replacement */
+			case 4:  // IRM -- Insertion-replacement
 				MODBIT(term.mode, set, MODE_INSERT);
 				break;
-			case 12: /* SRM -- Send/Receive */
+			case 12: // SRM -- Send/Receive
 				MODBIT(term.mode, !set, MODE_ECHO);
 				break;
-			case 20: /* LNM -- Linefeed/new line */
+			case 20: // LNM -- Linefeed/new line
 				MODBIT(term.mode, set, MODE_CRLF);
 				break;
 			default:
@@ -1667,22 +1670,22 @@ csihandle(void)
 	unknown:
 		fprintf(stderr, "erresc: unknown csi ");
 		csidump();
-		/* die(""); */
+		// die("");
 		break;
-	case '@': /* ICH -- Insert <n> blank char */
+	case '@': // ICH -- Insert <n> blank char
 		DEFAULT(csiescseq.arg[0], 1);
 		tinsertblank(csiescseq.arg[0]);
 		break;
-	case 'A': /* CUU -- Cursor <n> Up */
+	case 'A': // CUU -- Cursor <n> Up
 		DEFAULT(csiescseq.arg[0], 1);
 		tmoveto(term.c.x, term.c.y-csiescseq.arg[0]);
 		break;
-	case 'B': /* CUD -- Cursor <n> Down */
-	case 'e': /* VPR --Cursor <n> Down */
+	case 'B': // CUD -- Cursor <n> Down
+	case 'e': // VPR --Cursor <n> Down
 		DEFAULT(csiescseq.arg[0], 1);
 		tmoveto(term.c.x, term.c.y+csiescseq.arg[0]);
 		break;
-	case 'i': /* MC -- Media Copy */
+	case 'i': // MC -- Media Copy
 		switch (csiescseq.arg[0]) {
 		case 0:
 			tdump();
@@ -1701,139 +1704,139 @@ csihandle(void)
 			break;
 		}
 		break;
-	case 'c': /* DA -- Device Attributes */
+	case 'c': // DA -- Device Attributes
 		if (csiescseq.arg[0] == 0)
 			ttywrite(vtiden, strlen(vtiden), 0);
 		break;
-	case 'C': /* CUF -- Cursor <n> Forward */
-	case 'a': /* HPR -- Cursor <n> Forward */
+	case 'C': // CUF -- Cursor <n> Forward
+	case 'a': // HPR -- Cursor <n> Forward
 		DEFAULT(csiescseq.arg[0], 1);
 		tmoveto(term.c.x+csiescseq.arg[0], term.c.y);
 		break;
-	case 'D': /* CUB -- Cursor <n> Backward */
+	case 'D': // CUB -- Cursor <n> Backward
 		DEFAULT(csiescseq.arg[0], 1);
 		tmoveto(term.c.x-csiescseq.arg[0], term.c.y);
 		break;
-	case 'E': /* CNL -- Cursor <n> Down and first col */
+	case 'E': // CNL -- Cursor <n> Down and first col
 		DEFAULT(csiescseq.arg[0], 1);
 		tmoveto(0, term.c.y+csiescseq.arg[0]);
 		break;
-	case 'F': /* CPL -- Cursor <n> Up and first col */
+	case 'F': // CPL -- Cursor <n> Up and first col
 		DEFAULT(csiescseq.arg[0], 1);
 		tmoveto(0, term.c.y-csiescseq.arg[0]);
 		break;
-	case 'g': /* TBC -- Tabulation clear */
+	case 'g': // TBC -- Tabulation clear
 		switch (csiescseq.arg[0]) {
-		case 0: /* clear current tab stop */
+		case 0: // clear current tab stop
 			term.tabs[term.c.x] = 0;
 			break;
-		case 3: /* clear all the tabs */
+		case 3: // clear all the tabs
 			memset(term.tabs, 0, term.col * sizeof(*term.tabs));
 			break;
 		default:
 			goto unknown;
 		}
 		break;
-	case 'G': /* CHA -- Move to <col> */
-	case '`': /* HPA */
+	case 'G': // CHA -- Move to <col>
+	case '`': // HPA */
 		DEFAULT(csiescseq.arg[0], 1);
 		tmoveto(csiescseq.arg[0]-1, term.c.y);
 		break;
-	case 'H': /* CUP -- Move to <row> <col> */
-	case 'f': /* HVP */
+	case 'H': // CUP -- Move to <row> <col>
+	case 'f': // HVP
 		DEFAULT(csiescseq.arg[0], 1);
 		DEFAULT(csiescseq.arg[1], 1);
 		tmoveato(csiescseq.arg[1]-1, csiescseq.arg[0]-1);
 		break;
-	case 'I': /* CHT -- Cursor Forward Tabulation <n> tab stops */
+	case 'I': // CHT -- Cursor Forward Tabulation <n> tab stops
 		DEFAULT(csiescseq.arg[0], 1);
 		tputtab(csiescseq.arg[0]);
 		break;
-	case 'J': /* ED -- Clear screen */
+	case 'J': // ED -- Clear screen
 		switch (csiescseq.arg[0]) {
-		case 0: /* below */
+		case 0: // below
 			tclearregion(term.c.x, term.c.y, term.col-1, term.c.y);
 			if (term.c.y < term.row-1) {
 				tclearregion(0, term.c.y+1, term.col-1,
 						term.row-1);
 			}
 			break;
-		case 1: /* above */
+		case 1: // above
 			if (term.c.y > 1)
 				tclearregion(0, 0, term.col-1, term.c.y-1);
 			tclearregion(0, term.c.y, term.c.x, term.c.y);
 			break;
-		case 2: /* all */
+		case 2: // all
 			tclearregion(0, 0, term.col-1, term.row-1);
 			break;
 		default:
 			goto unknown;
 		}
 		break;
-	case 'K': /* EL -- Clear line */
+	case 'K': // EL -- Clear line
 		switch (csiescseq.arg[0]) {
-		case 0: /* right */
+		case 0: // right
 			tclearregion(term.c.x, term.c.y, term.col-1,
 					term.c.y);
 			break;
-		case 1: /* left */
+		case 1: // left
 			tclearregion(0, term.c.y, term.c.x, term.c.y);
 			break;
-		case 2: /* all */
+		case 2: // all
 			tclearregion(0, term.c.y, term.col-1, term.c.y);
 			break;
 		}
 		break;
-	case 'S': /* SU -- Scroll <n> line up */
+	case 'S': // SU -- Scroll <n> line up
 		DEFAULT(csiescseq.arg[0], 1);
 		tscrollup(term.top, csiescseq.arg[0], 0);
 		break;
-	case 'T': /* SD -- Scroll <n> line down */
+	case 'T': // SD -- Scroll <n> line down
 		DEFAULT(csiescseq.arg[0], 1);
 		tscrolldown(term.top, csiescseq.arg[0], 0);
 		break;
-	case 'L': /* IL -- Insert <n> blank lines */
+	case 'L': // IL -- Insert <n> blank lines
 		DEFAULT(csiescseq.arg[0], 1);
 		tinsertblankline(csiescseq.arg[0]);
 		break;
-	case 'l': /* RM -- Reset Mode */
+	case 'l': // RM -- Reset Mode
 		tsetmode(csiescseq.priv, 0, csiescseq.arg, csiescseq.narg);
 		break;
-	case 'M': /* DL -- Delete <n> lines */
+	case 'M': // DL -- Delete <n> lines
 		DEFAULT(csiescseq.arg[0], 1);
 		tdeleteline(csiescseq.arg[0]);
 		break;
-	case 'X': /* ECH -- Erase <n> char */
+	case 'X': // ECH -- Erase <n> char
 		DEFAULT(csiescseq.arg[0], 1);
 		tclearregion(term.c.x, term.c.y,
 				term.c.x + csiescseq.arg[0] - 1, term.c.y);
 		break;
-	case 'P': /* DCH -- Delete <n> char */
+	case 'P': // DCH -- Delete <n> char
 		DEFAULT(csiescseq.arg[0], 1);
 		tdeletechar(csiescseq.arg[0]);
 		break;
-	case 'Z': /* CBT -- Cursor Backward Tabulation <n> tab stops */
+	case 'Z': // CBT -- Cursor Backward Tabulation <n> tab stops
 		DEFAULT(csiescseq.arg[0], 1);
 		tputtab(-csiescseq.arg[0]);
 		break;
-	case 'd': /* VPA -- Move to <row> */
+	case 'd': // VPA -- Move to <row>
 		DEFAULT(csiescseq.arg[0], 1);
 		tmoveato(term.c.x, csiescseq.arg[0]-1);
 		break;
-	case 'h': /* SM -- Set terminal mode */
+	case 'h': // SM -- Set terminal mode
 		tsetmode(csiescseq.priv, 1, csiescseq.arg, csiescseq.narg);
 		break;
-	case 'm': /* SGR -- Terminal attribute (color) */
+	case 'm': // SGR -- Terminal attribute (color)
 		tsetattr(csiescseq.arg, csiescseq.narg);
 		break;
-	case 'n': /* DSR – Device Status Report (cursor position) */
+	case 'n': // DSR – Device Status Report (cursor position)
 		if (csiescseq.arg[0] == 6) {
 			len = snprintf(buf, sizeof(buf),"\033[%i;%iR",
 					term.c.y+1, term.c.x+1);
 			ttywrite(buf, len, 0);
 		}
 		break;
-	case 'r': /* DECSTBM -- Set Scrolling Region */
+	case 'r': // DECSTBM -- Set Scrolling Region
 		if (csiescseq.priv) {
 			goto unknown;
 		} else {
@@ -1843,15 +1846,15 @@ csihandle(void)
 			tmoveato(0, 0);
 		}
 		break;
-	case 's': /* DECSC -- Save cursor position (ANSI.SYS) */
+	case 's': // DECSC -- Save cursor position (ANSI.SYS)
 		tcursor(CURSOR_SAVE);
 		break;
-	case 'u': /* DECRC -- Restore cursor position (ANSI.SYS) */
+	case 'u': // DECRC -- Restore cursor position (ANSI.SYS)
 		tcursor(CURSOR_LOAD);
 		break;
 	case ' ':
 		switch (csiescseq.mode[1]) {
-		case 'q': /* DECSCUSR -- Set Cursor Style */
+		case 'q': // DECSCUSR -- Set Cursor Style
 			if (xsetcursor(csiescseq.arg[0]))
 				goto unknown;
 			break;
@@ -1903,7 +1906,7 @@ strhandle(void)
 	par = (narg = strescseq.narg) ? atoi(strescseq.args[0]) : 0;
 
 	switch (strescseq.type) {
-	case ']': /* OSC -- Operating System Command */
+	case ']': // OSC -- Operating System Command
 		switch (par) {
 		case 0:
 		case 1:
@@ -1924,11 +1927,11 @@ strhandle(void)
 				}
 			}
 			return;
-		case 4: /* color set */
+		case 4: // color set
 			if (narg < 3)
 				break;
 			p = strescseq.args[2];
-			/* FALLTHROUGH */
+			// FALLTHROUGH
 		case 104: /* color reset, here p = NULL */
 			j = (narg > 1) ? atoi(strescseq.args[1]) : -1;
 			if (xsetcolorname(j, p)) {
@@ -1943,13 +1946,13 @@ strhandle(void)
 			return;
 		}
 		break;
-	case 'k': /* old title set compatibility */
+	case 'k': // old title set compatibility
 		xsettitle(strescseq.args[0]);
 		return;
-	case 'P': /* DCS -- Device Control String */
+	case 'P': // DCS -- Device Control String
 		term.mode |= ESC_DCS;
-	case '_': /* APC -- Application Program Command */
-	case '^': /* PM -- Privacy Message */
+	case '_': // APC -- Application Program Command
+	case '^': // PM -- Privacy Message
 		return;
 	}
 
@@ -2057,7 +2060,7 @@ externalpipe(const Arg *arg)
 	}
 
 	close(to[0]);
-	/* ignore sigpipe for now, in case child exists early */
+	// ignore sigpipe for now, in case child exists early
 	oldsigpipe = signal(SIGPIPE, SIG_IGN);
 	newline = 0;
 	for (n = 0; n < term.row; n++) {
@@ -2078,7 +2081,7 @@ externalpipe(const Arg *arg)
 	if (newline)
 		(void)xwrite(to[1], "\n", 1);
 	close(to[1]);
-	/* restore */
+	// restore
 	signal(SIGPIPE, oldsigpipe);
 }
 
@@ -2202,7 +2205,7 @@ tdectest(char c)
 {
 	int x, y;
 
-	if (c == '8') { /* DEC screen alignment test. */
+	if (c == '8') { // DEC screen alignment test.
 		for (x = 0; x < term.col; ++x) {
 			for (y = 0; y < term.row; ++y)
 				tsetchar('E', &term.c.attr, x, y);
@@ -2216,17 +2219,17 @@ tstrsequence(uchar c)
 	strreset();
 
 	switch (c) {
-	case 0x90:   /* DCS -- Device Control String */
+	case 0x90:   // DCS -- Device Control String
 		c = 'P';
 		term.esc |= ESC_DCS;
 		break;
-	case 0x9f:   /* APC -- Application Program Command */
+	case 0x9f:   // APC -- Application Program Command
 		c = '_';
 		break;
-	case 0x9e:   /* PM -- Privacy Message */
+	case 0x9e:   // PM -- Privacy Message
 		c = '^';
 		break;
-	case 0x9d:   /* OSC -- Operating System Command */
+	case 0x9d:   // OSC -- Operating System Command
 		c = ']';
 		break;
 	}
@@ -2238,95 +2241,95 @@ void
 tcontrolcode(uchar ascii)
 {
 	switch (ascii) {
-	case '\t':   /* HT */
+	case '\t':   // HT
 		tputtab(1);
 		return;
-	case '\b':   /* BS */
+	case '\b':   // BS
 		tmoveto(term.c.x-1, term.c.y);
 		return;
-	case '\r':   /* CR */
+	case '\r':   // CR
 		tmoveto(0, term.c.y);
 		return;
-	case '\f':   /* LF */
-	case '\v':   /* VT */
-	case '\n':   /* LF */
-		/* go to first col if the mode is set */
+	case '\f':   // LF 
+	case '\v':   // VT 
+	case '\n':   // LF 
+		// go to first col if the mode is set
 		tnewline(IS_SET(MODE_CRLF));
 		return;
-	case '\a':   /* BEL */
+	case '\a':   // BEL
 		if (term.esc & ESC_STR_END) {
-			/* backwards compatibility to xterm */
+			// backwards compatibility to xterm
 			strhandle();
 		} else {
 			xbell();
 		}
 		break;
-	case '\033': /* ESC */
+	case '\033': // ESC
 		csireset();
 		term.esc &= ~(ESC_CSI|ESC_ALTCHARSET|ESC_TEST);
 		term.esc |= ESC_START;
 		return;
-	case '\016': /* SO (LS1 -- Locking shift 1) */
-	case '\017': /* SI (LS0 -- Locking shift 0) */
+	case '\016': // SO (LS1 -- Locking shift 1)
+	case '\017': // SI (LS0 -- Locking shift 0)
 		term.charset = 1 - (ascii - '\016');
 		return;
-	case '\032': /* SUB */
+	case '\032': // SUB 
 		tsetchar('?', &term.c.attr, term.c.x, term.c.y);
-	case '\030': /* CAN */
+	case '\030': // CAN
 		csireset();
 		break;
-	case '\005': /* ENQ (IGNORED) */
-	case '\000': /* NUL (IGNORED) */
-	case '\021': /* XON (IGNORED) */
-	case '\023': /* XOFF (IGNORED) */
-	case 0177:   /* DEL (IGNORED) */
+	case '\005': // ENQ (IGNORED)
+	case '\000': // NUL (IGNORED)
+	case '\021': // XON (IGNORED)
+	case '\023': // XOFF (IGNORED)
+	case 0177:   // DEL (IGNORED)
 		return;
-	case 0x80:   /* TODO: PAD */
-	case 0x81:   /* TODO: HOP */
-	case 0x82:   /* TODO: BPH */
-	case 0x83:   /* TODO: NBH */
-	case 0x84:   /* TODO: IND */
+	case 0x80:   // TODO: PAD
+	case 0x81:   // TODO: HOP
+	case 0x82:   // TODO: BPH
+	case 0x83:   // TODO: NBH
+	case 0x84:   // TODO: IND
 		break;
-	case 0x85:   /* NEL -- Next line */
-		tnewline(1); /* always go to first col */
+	case 0x85:   // NEL -- Next line
+		tnewline(1); // always go to first col
 		break;
-	case 0x86:   /* TODO: SSA */
-	case 0x87:   /* TODO: ESA */
+	case 0x86:   // TODO: SSA
+	case 0x87:   // TODO: ESA
 		break;
-	case 0x88:   /* HTS -- Horizontal tab stop */
+	case 0x88:   // HTS -- Horizontal tab stop 
 		term.tabs[term.c.x] = 1;
 		break;
-	case 0x89:   /* TODO: HTJ */
-	case 0x8a:   /* TODO: VTS */
-	case 0x8b:   /* TODO: PLD */
-	case 0x8c:   /* TODO: PLU */
-	case 0x8d:   /* TODO: RI */
-	case 0x8e:   /* TODO: SS2 */
-	case 0x8f:   /* TODO: SS3 */
-	case 0x91:   /* TODO: PU1 */
-	case 0x92:   /* TODO: PU2 */
-	case 0x93:   /* TODO: STS */
-	case 0x94:   /* TODO: CCH */
-	case 0x95:   /* TODO: MW */
-	case 0x96:   /* TODO: SPA */
-	case 0x97:   /* TODO: EPA */
-	case 0x98:   /* TODO: SOS */
-	case 0x99:   /* TODO: SGCI */
+	case 0x89:   // TODO: HTJ
+	case 0x8a:   // TODO: VTS
+	case 0x8b:   // TODO: PLD
+	case 0x8c:   // TODO: PLU
+	case 0x8d:   // TODO: RI
+	case 0x8e:   // TODO: SS2
+	case 0x8f:   // TODO: SS3
+	case 0x91:   // TODO: PU1
+	case 0x92:   // TODO: PU2
+	case 0x93:   // TODO: STS
+	case 0x94:   // TODO: CCH
+	case 0x95:   // TODO: MW
+	case 0x96:   // TODO: SPA
+	case 0x97:   // TODO: EPA
+	case 0x98:   // TODO: SOS
+	case 0x99:   // TODO: SGCI
 		break;
-	case 0x9a:   /* DECID -- Identify Terminal */
+	case 0x9a:   // DECID -- Identify Terminal
 		ttywrite(vtiden, strlen(vtiden), 0);
 		break;
-	case 0x9b:   /* TODO: CSI */
-	case 0x9c:   /* TODO: ST */
+	case 0x9b:   // TODO: CSI
+	case 0x9c:   // TODO: ST
 		break;
-	case 0x90:   /* DCS -- Device Control String */
-	case 0x9d:   /* OSC -- Operating System Command */
-	case 0x9e:   /* PM -- Privacy Message */
-	case 0x9f:   /* APC -- Application Program Command */
+	case 0x90:   // DCS -- Device Control String
+	case 0x9d:   // OSC -- Operating System Command
+	case 0x9e:   // PM -- Privacy Message
+	case 0x9f:   // APC -- Application Program Command
 		tstrsequence(ascii);
 		return;
 	}
-	/* only CAN, SUB, \a and C1 chars interrupt a sequence */
+	// only CAN, SUB, \a and C1 chars interrupt a sequence
 	term.esc &= ~(ESC_STR_END|ESC_STR);
 }
 
@@ -2347,65 +2350,65 @@ eschandle(uchar ascii)
 	case '%':
 		term.esc |= ESC_UTF8;
 		return 0;
-	case 'P': /* DCS -- Device Control String */
-	case '_': /* APC -- Application Program Command */
-	case '^': /* PM -- Privacy Message */
-	case ']': /* OSC -- Operating System Command */
-	case 'k': /* old title set compatibility */
+	case 'P': // DCS -- Device Control String
+	case '_': // APC -- Application Program Command
+	case '^': // PM -- Privacy Message
+	case ']': // OSC -- Operating System Command
+	case 'k': // old title set compatibility
 		tstrsequence(ascii);
 		return 0;
-	case 'n': /* LS2 -- Locking shift 2 */
-	case 'o': /* LS3 -- Locking shift 3 */
+	case 'n': // LS2 -- Locking shift 2
+	case 'o': // LS3 -- Locking shift 3
 		term.charset = 2 + (ascii - 'n');
 		break;
-	case '(': /* GZD4 -- set primary charset G0 */
-	case ')': /* G1D4 -- set secondary charset G1 */
-	case '*': /* G2D4 -- set tertiary charset G2 */
-	case '+': /* G3D4 -- set quaternary charset G3 */
+	case '(': // GZD4 -- set primary charset G0
+	case ')': // G1D4 -- set secondary charset G1
+	case '*': // G2D4 -- set tertiary charset G2
+	case '+': // G3D4 -- set quaternary charset G3
 		term.icharset = ascii - '(';
 		term.esc |= ESC_ALTCHARSET;
 		return 0;
-	case 'D': /* IND -- Linefeed */
+	case 'D': // IND -- Linefeed
 		if (term.c.y == term.bot) {
 			tscrollup(term.top, 1, 1);
 		} else {
 			tmoveto(term.c.x, term.c.y+1);
 		}
 		break;
-	case 'E': /* NEL -- Next line */
-		tnewline(1); /* always go to first col */
+	case 'E': // NEL -- Next line
+		tnewline(1); // always go to first col
 		break;
-	case 'H': /* HTS -- Horizontal tab stop */
+	case 'H': // HTS -- Horizontal tab stop
 		term.tabs[term.c.x] = 1;
 		break;
-	case 'M': /* RI -- Reverse index */
+	case 'M': // RI -- Reverse index
 		if (term.c.y == term.top) {
 			tscrolldown(term.top, 1, 1);
 		} else {
 			tmoveto(term.c.x, term.c.y-1);
 		}
 		break;
-	case 'Z': /* DECID -- Identify Terminal */
+	case 'Z': // DECID -- Identify Terminal
 		ttywrite(vtiden, strlen(vtiden), 0);
 		break;
-	case 'c': /* RIS -- Reset to inital state */
+	case 'c': // RIS -- Reset to initial state
 		treset();
 		resettitle();
 		xloadcols();
 		break;
-	case '=': /* DECPAM -- Application keypad */
+	case '=': // DECPAM -- Application keypad
 		xsetmode(1, MODE_APPKEYPAD);
 		break;
-	case '>': /* DECPNM -- Normal keypad */
+	case '>': // DECPNM -- Normal keypad
 		xsetmode(0, MODE_APPKEYPAD);
 		break;
-	case '7': /* DECSC -- Save Cursor */
+	case '7': // DECSC -- Save Cursor
 		tcursor(CURSOR_SAVE);
 		break;
-	case '8': /* DECRC -- Restore Cursor */
+	case '8': // DECRC -- Restore Cursor
 		tcursor(CURSOR_LOAD);
 		break;
-	case '\\': /* ST -- String Terminator */
+	case '\\': // ST -- String Terminator
 		if (term.esc & ESC_STR_END)
 			strhandle();
 		break;
@@ -2461,7 +2464,7 @@ tputc(Rune u)
 
 
 		if (IS_SET(MODE_SIXEL)) {
-			/* TODO: implement sixel mode */
+			// TODO: implement sixel mode
 			return;
 		}
 		if (term.esc&ESC_DCS && strescseq.len == 0 && u == 'q')
@@ -2521,7 +2524,7 @@ check_control_code:
 		} else {
 			if (!eschandle(u))
 				return;
-			/* sequence already finished */
+			// sequence already finished
 		}
 		term.esc = 0;
 		/*
@@ -2573,7 +2576,7 @@ twrite(const char *buf, int buflen, int show_ctrl)
 
 	for (n = 0; n < buflen; n += charsize) {
 		if (IS_SET(MODE_UTF8) && !IS_SET(MODE_SIXEL)) {
-			/* process a complete utf8 char */
+			// process a complete utf8 char
 			charsize = utf8decode(buf + n, &u, buflen - n);
 			if (charsize == 0)
 				break;
@@ -2620,7 +2623,7 @@ tresize(int col, int row)
 		free(term.line[i]);
 		free(term.alt[i]);
 	}
-	/* ensure that both src and dst are not NULL */
+	// ensure that both src and dst are not NULL
 	if (i > 0) {
 		memmove(term.line, term.line + i, row * sizeof(Line));
 		memmove(term.alt, term.alt + i, row * sizeof(Line));
@@ -2630,7 +2633,7 @@ tresize(int col, int row)
 		free(term.alt[i]);
 	}
 
-	/* resize to new height */
+	// resize to new height
 	term.line = xrealloc(term.line, row * sizeof(Line));
 	term.alt  = xrealloc(term.alt,  row * sizeof(Line));
 	term.dirty = xrealloc(term.dirty, row * sizeof(*term.dirty));
@@ -2644,13 +2647,13 @@ tresize(int col, int row)
 		}
 	}
 
-	/* resize each r w to new width, zero-pad if needed */
+	// resize each r w to new width, zero-pad if needed
 	for (i = 0; i < minrow; i++) {
 		term.line[i] = xrealloc(term.line[i], col * sizeof(Glyph));
 		term.alt[i]  = xrealloc(term.alt[i],  col * sizeof(Glyph));
 	}
 
-	/* allocate any new rows */
+	// allocate any new rows
 	for (/* i = minrow */; i < row; i++) {
 		term.line[i] = xmalloc(col * sizeof(Glyph));
 		term.alt[i] = xmalloc(col * sizeof(Glyph));
@@ -2664,14 +2667,14 @@ tresize(int col, int row)
 		for (bp += tabspaces; bp < term.tabs + col; bp += tabspaces)
 			*bp = 1;
 	}
-	/* update terminal size */
+	// update terminal size
 	term.col = col;
 	term.row = row;
-	/* reset scrolling region */
+	// reset scrolling region
 	tsetscroll(0, row-1);
-	/* make use of the LIMIT in tmoveto */
+	// make use of the LIMIT in tmoveto
 	tmoveto(term.c.x, term.c.y);
-	/* Clearing both screens (it makes dirty all lines) */
+	// Clearing both screens (it makes dirty all lines)
 	c = term.c;
 	for (i = 0; i < 2; i++) {
 		if (mincol < col && 0 < minrow) {
@@ -2713,7 +2716,7 @@ draw(void)
 	if (!xstartdraw())
 		return;
 
-	/* adjust cursor position */
+	// adjust cursor position
 	LIMIT(term.ocx, 0, term.col-1);
 	LIMIT(term.ocy, 0, term.row-1);
 	if (term.line[term.ocy][term.ocx].mode & ATTR_WDUMMY)
@@ -2736,3 +2739,5 @@ redraw(void)
 	tfulldirt();
 	draw();
 }
+
+// vim: filetype=c

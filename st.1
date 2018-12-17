@@ -1,6 +1,6 @@
 .TH ST 1 st\-VERSION
 .SH NAME
-st \- simple terminal (Luke Smith (https://lukesmith.xyz)'s build)
+st \- simple terminal
 .SH SYNOPSIS
 .B st
 .RB [ \-aiv ]
@@ -125,56 +125,60 @@ and all the remaining arguments are used as a command
 even without it.
 .SH SHORTCUTS
 .TP
-.B Alt-j/k or Alt-Up/Down or Alt-Mouse Wheel
+.B Ctrl-j/k/Up/Down/Scroll
 Scroll up/down one line at a time.
 .TP
-.B Alt-u/d or Alt-Page Up/Page Down
+.B Ctrl-PageUp/PageDown
 Scroll up/down one screen at a time.
 .TP
-.B Alt-Shift-k/j or Alt-Shift-Page Up/Page Down or Alt-Shift-Mouse Wheel
+.B Ctrl-Shift-k/j/PageUp/PageDown/Scroll
 Increase or decrease font size.
 .TP
-.B Alt-Home
+.B Ctrl-Home
 Reset to default font size.
 .TP
-.B Shift-Insert or Alt-v
+.B Ctrl-Shift-v
 Paste from clipboard.
 .TP
-.B Alt-c
+.B Ctrl-Shift-c
 Copy to clipboard.
 .TP
-.B Alt-p
+.B Ctrl-Shift-p
 Paste/input primary selection.
 .TP
-.B Alt-l
+.B Ctrl-Shift-l
 Show dmenu menu of all URLs on screen and choose one to open.
 .I Note:
-Requires xurls installed.
+Requires xurls and dmenu installed.
+.TP
+.B Ctrl-Shift-i
+Launch dmenu to enter a unicode codepoint and send the corresponding glyph
+to st.
+.I Note:
+Requires dmenu installed.
 .TP
 .B Break
 Send a break in the serial line.
 Break key is obtained in PC keyboards
 pressing at the same time control and pause.
 .TP
-.B Ctrl-Print Screen
+.B Ctrl-PrintScreen
 Toggle if st should print to the
 .I iofile.
 .TP
-.B Shift-Print Screen
-Print the full screen to the
-.I iofile.
-.TP
-.B Print Screen
+.B PrintScreen
 Print the selection to the
 .I iofile.
 .TP
-.B Ctrl-Shift-i
-Launch dmenu to enter a unicode codepoint and send the corresponding glyph
-to st.
+.B Shift-PrintScreen
+Print the full screen to the
+.I iofile.
 .SH CUSTOMIZATION
 .B st
-can be customized by creating a custom config.h and (re)compiling the source
-code. This keeps it fast, secure and simple.
+can be customized by creating a custom config.h and (re)compiling the source code. 
+This keeps it fast, secure and simple. 
+You can use Xresources to change
+fonts, colors and other basic stuff.
 .SH AUTHORS
 See the LICENSE file for the authors.
 .SH LICENSE
