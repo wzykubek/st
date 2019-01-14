@@ -240,9 +240,6 @@ static Shortcut shortcuts[] = {
 	{ MODKEY|ShiftMask,     XK_J,           zoom,           {.f = -1} },
 	{ MODKEY|ShiftMask,     XK_Up,          zoom,           {.f = +1} },
 	{ MODKEY|ShiftMask,     XK_Down,        zoom,           {.f = -1} },
-	{ MODKEY|ShiftMask,     XK_plus,        zoom,           {.f = +1} },
-	{ MODKEY,               XK_minus,       zoom,           {.f = -1} },
-	{ MODKEY,               XK_equal,       zoomreset,      {.f =  0} },
     { MODKEY|ShiftMask,     XK_L,           externalpipe,   {.v = openurlcmd} },
 };
 
