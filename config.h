@@ -88,26 +88,26 @@ unsigned int alpha = 0xff;
 
 // colorscheme
 static const char *colorname[] = {
-	"#0a0a30", // color0 
-	"#aa2f46", // color1 
-	"#2a9361", // color2 
-	"#a0782e", // color3 
-	"#226ebf", // color4 
-	"#aa2f83", // color5 
-	"#2a9392", // color6 
-	"#9b9cb5", // color7 
-	"#10105b", // color8 
-	"#aa2f46", // color9 
-	"#2a9361", // color10
-	"#a0782e", // color11
-	"#226ebf", // color12
-	"#aa2f83", // color13
-	"#2a9392", // color14
-	"#9b9cb5", // color15
+	"#1d1f30", // color0 
+	"#b54848", // color1 
+	"#7c933f", // color2 
+	"#af774f", // color3 
+	"#5f819d", // color4 
+	"#915b8d", // color5 
+	"#5e8d87", // color6 
+	"#aaaaaa", // color7 
+	"#2a3145", // color8 
+	"#b54848", // color9 
+	"#7c933f", // color10
+	"#af774f", // color11
+	"#5f819d", // color12
+	"#915b8d", // color13
+	"#5e8d87", // color14
+	"#aaaaaa", // color15
 	[255] = 0,
 	// more colors can be added after 255 to use with DefaultXX
-	"#0a0a30",   // color256 -> background
-	"#9b9cb5",   // color257 -> foreground
+	"#1d1f30",   // color256 -> background
+	"#aaaaaa",   // color257 -> foreground
 };
 
 
@@ -171,7 +171,7 @@ ResourcePref resources[] = {
 	{ "color15",      STRING,  &colorname[15] },
 	{ "background",   STRING,  &colorname[256] },
 	{ "foreground",   STRING,  &colorname[257] },
-	{ "cursorColor",  STRING,  &colorname[258] },
+	//{ "cursorColor",  STRING,  &colorname[258] },
 	{ "termname",     STRING,  &termname },
 	{ "shell",        STRING,  &shell },
 	{ "xfps",         INTEGER, &xfps },
