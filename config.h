@@ -210,8 +210,8 @@ MouseKey mkeys[] = {
 	{ Button5,    MODKEY|ShiftMask,     zoom,           {.f =  -1} },
 };
 
-static char *openurlcmd[] = { "/bin/sh", "-c",
-    "xurls | dmenu -l 10 | xargs -r $BROWSER",
+static char *copyurlcmd[] = { "/bin/sh", "-c",
+    "xurls | dmenu -l 10 | xclip -selection clipboard",
     "externalpipe", NULL };
 
 static Shortcut shortcuts[] = {
@@ -242,7 +242,7 @@ static Shortcut shortcuts[] = {
 	{ MODKEY|ShiftMask,     XK_J,           zoom,           {.f = -1} },
 	{ MODKEY|ShiftMask,     XK_Up,          zoom,           {.f = +1} },
 	{ MODKEY|ShiftMask,     XK_Down,        zoom,           {.f = -1} },
-    { MODKEY|ShiftMask,     XK_L,           externalpipe,   {.v = openurlcmd} },
+	{ MODKEY|ShiftMask,     XK_L,           externalpipe,   {.v = copyurlcmd} },
 };
 
 /*
