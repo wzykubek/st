@@ -88,16 +88,16 @@ unsigned int alpha = 0xff;
 
 // colorscheme
 static const char *colorname[] = {
-	"#1d1f30", // color0 
-	"#b54848", // color1 
-	"#7c933f", // color2 
-	"#af774f", // color3 
-	"#5f819d", // color4 
-	"#915b8d", // color5 
-	"#5e8d87", // color6 
-	"#aaaaaa", // color7 
-	"#2a3145", // color8 
-	"#b54848", // color9 
+	"#181b21", // color0
+	"#b54848", // color1
+	"#7c933f", // color2
+	"#af774f", // color3
+	"#5f819d", // color4
+	"#915b8d", // color5
+	"#5e8d87", // color6
+	"#aaaaaa", // color7
+	"#22262e", // color8
+	"#b54848", // color9
 	"#7c933f", // color10
 	"#af774f", // color11
 	"#5f819d", // color12
@@ -106,7 +106,7 @@ static const char *colorname[] = {
 	"#aaaaaa", // color15
 	[255] = 0,
 	// more colors can be added after 255 to use with DefaultXX
-	"#1d1f30",   // color256 -> background
+	"#181b21",   // color256 -> background
 	"#aaaaaa",   // color257 -> foreground
 };
 
@@ -194,9 +194,9 @@ static MouseShortcut mshortcuts[] = {
 	{ Button5,    XK_NO_MOD,    "\005" },
 };
 
-/* 
+/*
  * Internal keyboard shortcuts.
- * If you want to change Mod key from Control to Alt change it to Mod1Mask 
+ * If you want to change Mod key from Control to Alt change it to Mod1Mask
  */
 #define MODKEY ControlMask
 
