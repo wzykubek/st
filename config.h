@@ -89,25 +89,25 @@ unsigned int alpha = 0xff;
 // colorscheme
 static const char *colorname[] = {
 	"#181b21", // color0
-	"#b54848", // color1
-	"#7c933f", // color2
-	"#af774f", // color3
-	"#5f819d", // color4
-	"#915b8d", // color5
-	"#5e8d87", // color6
-	"#aaaaaa", // color7
+	"#cf5252", // color1
+	"#92ad4a", // color2
+	"#c9895b", // color3
+	"#6f97b8", // color4
+	"#ab6ba6", // color5
+	"#6fa69f", // color6
+	"#cccccc", // color7
 	"#22262e", // color8
-	"#b54848", // color9
-	"#7c933f", // color10
-	"#af774f", // color11
-	"#5f819d", // color12
-	"#915b8d", // color13
-	"#5e8d87", // color14
-	"#aaaaaa", // color15
+	"#cf5252", // color9
+	"#92ad4a", // color10
+	"#c9895b", // color11
+	"#6f97b8", // color12
+	"#ab6ba6", // color13
+	"#6fa69f", // color14
+	"#cccccc", // color15
 	[255] = 0,
 	// more colors can be added after 255 to use with DefaultXX
 	"#181b21",   // color256 -> background
-	"#aaaaaa",   // color257 -> foreground
+	"#cccccc",   // color257 -> foreground
 };
 
 
