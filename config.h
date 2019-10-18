@@ -88,7 +88,7 @@ unsigned int alpha = 0xff;
 
 // colorscheme
 static const char *colorname[] = {
-	"#181b21", // color0
+	"#0a0200", // color0
 	"#cf5252", // color1
 	"#92ad4a", // color2
 	"#c9895b", // color3
@@ -106,7 +106,7 @@ static const char *colorname[] = {
 	"#cccccc", // color15
 	[255] = 0,
 	// more colors can be added after 255 to use with DefaultXX
-	"#181b21",   // color256 -> background
+	"#0a0200",   // color256 -> background
 	"#cccccc",   // color257 -> foreground
 };
 
