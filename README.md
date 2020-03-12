@@ -13,7 +13,7 @@ This project is fork of [st (simple terminal)](https://st.suckless.org/) with so
 Make sure you have [dependencies](#dependencies) installed before you install st.
 
 ```shell
-$ git clone https://gitlab.com/samedamci/st
+$ git clone https://github.com/samedamci/st
 $ cd st
 $ sudo make clean install
 ```
