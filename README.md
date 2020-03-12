@@ -3,7 +3,7 @@
 This project is fork of [st (simple terminal)](https://st.suckless.org/) with some additional features:
 
 * Compatibility with `Xresources` and `pywal` for dynamic colors.
-* Default and as fallback [biual](https://github.com/dawidpotocki/biual) colors otherwise.
+* Default and as fallback [biual](https://github.com/samedamci/biual-dot-conf) colors otherwise.
 * Transparency/alpha support, which is also adjustable from `~/.Xresources`.
 * Default font is system "`mono`" at 15pt, meaning the font will match your system font.
 * [Useful keybindings](#keybindings) for everyday use
@@ -13,7 +13,7 @@ This project is fork of [st (simple terminal)](https://st.suckless.org/) with so
 Make sure you have [dependencies](#dependencies) installed before you install st.
 
 ```shell
-$ git clone https://github.com/dawidpotocki/st
+$ git clone https://gitlab.com/samedamci/st
 $ cd st
 $ sudo make clean install
 ```

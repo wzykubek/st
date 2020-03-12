@@ -5,7 +5,7 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "Inconsolata:pixelsize=15:antialias=true:autohint=true";
+static char *font = "Inconsolata:pixelsize=15:antialias=false:autohint=true";
 static int borderpx = 4;
 
 /*
@@ -106,7 +106,7 @@ static const char *colorname[] = {
 	"#cccccc", // color15
 	[255] = 0,
 	// more colors can be added after 255 to use with DefaultXX
-	"#071616",   // color256 -> background
+	"#0a0200",   // color256 -> background
 	"#cccccc",   // color257 -> foreground
 };
 
@@ -198,7 +198,7 @@ static MouseShortcut mshortcuts[] = {
  * Internal keyboard shortcuts.
  * If you want to change Mod key from Control to Alt change it to Mod1Mask
  */
-#define MODKEY Mod1Mask
+#define MODKEY ControlMask
 
 MouseKey mkeys[] = {
 	// button     mask                  function        argument
@@ -223,8 +223,8 @@ static Shortcut shortcuts[] = {
 	{ MODKEY|ShiftMask,     XK_Prior,       zoom,           {.f = +1} },
 	{ MODKEY|ShiftMask,     XK_Next,        zoom,           {.f = -1} },
 	{ MODKEY,               XK_Home,        zoomreset,      {.f =  0} },
-	{ ControlMask|ShiftMask,     XK_C,           clipcopy,       {.i =  0} },
-	{ ControlMask|ShiftMask,     XK_V,           clippaste,      {.i =  0} },
+	{ MODKEY|ShiftMask,     XK_C,           clipcopy,       {.i =  0} },
+	{ MODKEY|ShiftMask,     XK_V,           clippaste,      {.i =  0} },
 	{ MODKEY|ShiftMask,     XK_P,           selpaste,       {.i =  0} },
 	{ MODKEY,               XK_Num_Lock,    numlock,        {.i =  0} },
 	{ MODKEY|ShiftMask,     XK_I,           iso14755,       {.i =  0} },
