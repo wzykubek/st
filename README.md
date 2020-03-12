@@ -42,7 +42,7 @@ Probably you have some required packages on your system already. "No" means that
 * `Ctrl+Shift+p` - Paste from primary selection
 
 ###### Scroll
-* `Ctrl+k/j/↑/↓` - Scroll one line back/forward
+* `Alt+k/j/↑/↓` - Scroll one line back/forward
 * `Shift+Scroll` - Scroll using mouse back/forward
 * `Ctrl+u/d/PageUp/PageDown` - Scroll one page back/forward
 
