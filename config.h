@@ -242,7 +242,6 @@ static Shortcut shortcuts[] = {
 	{ MODKEY|ControlMask,     XK_j,           zoom,           {.f = -1} },
 	{ MODKEY|ControlMask,     XK_Up,          zoom,           {.f = +1} },
 	{ MODKEY|ControlMask,     XK_Down,        zoom,           {.f = -1} },
-	{ MODKEY|ControlMask,     XK_l,           externalpipe,   {.v = copyurlcmd} },
 };
 
 /*
