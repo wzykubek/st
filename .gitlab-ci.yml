@@ -1,8 +1,0 @@
-before_script:
-  - apt-get update --yes --quiet
-  - apt-get install --yes --quiet libxft-dev libx11-dev fontconfig
-
-build:
-  stage: build
-  script:
-    - make

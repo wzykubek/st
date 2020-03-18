@@ -44,16 +44,11 @@ Probably you have some required packages on your system already. "No" means that
 ###### Scroll
 * `Alt+k/j/↑/↓` - Scroll one line back/forward
 * `Shift+Scroll` - Scroll using mouse back/forward
-* `Ctrl+u/d/PageUp/PageDown` - Scroll one page back/forward
+* `Alt+u/d/PageUp/PageDown` - Scroll one page back/forward
 
 ###### Resize
-* `Ctrl+Shift+k/j/↑/↓` - Increase/decrese font size
-* `Ctrl+Shift+d/u` - Increase/decrese font by larger interval
-* `Ctrl+Home` - Return to default font size
-
-###### Others
-* `Ctrl+Shift+l` - Pipe all urls from `st` to `dmenu`, so you can open url in your `$BROWSER` without need for manual copying url.
-* `Ctrl+Shift+i` - Will open `dmenu` and ask you to enter a unicode codepoint that will be converted to a glyph and then pushed to `st`.
+* `Ctrl+Alt+k/j/↑/↓` - Increase/decrese font size
+* `Alt+Home` - Return to default font size
 
 ## Xresources
 
