@@ -47,7 +47,7 @@ Probably you have some required packages on your system already. "No" means that
 * `Alt+u/d/PageUp/PageDown` - Scroll one page back/forward
 
 ###### Resize
-* `Ctrl+Alt+k/j/↑/↓` - Increase/decrese font size
+* `Shift+Alt+k/j/↑/↓` - Increase/decrese font size
 * `Alt+Home` - Return to default font size
 
 ## Xresources
