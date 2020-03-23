@@ -198,7 +198,7 @@ static MouseShortcut mshortcuts[] = {
  * Internal keyboard shortcuts.
  * If you want to change Mod key from Control to Alt change it to Mod1Mask
  */
-#define MODKEY Mod1Mask
+#define MODKEY ControlMask
 
 MouseKey mkeys[] = {
 	// button     mask                  function        argument
