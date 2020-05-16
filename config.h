@@ -198,7 +198,7 @@ static MouseShortcut mshortcuts[] = {
  * Internal keyboard shortcuts.
  * If you want to change Mod key from Control to Alt change it to Mod1Mask
  */
-#define MODKEY ControlMask
+#define MODKEY Mod1Mask
 
 MouseKey mkeys[] = {
 	// button     mask                  function        argument
@@ -211,63 +211,30 @@ MouseKey mkeys[] = {
 };
 
 static char *copyurlcmd[] = { "/bin/sh", "-c",
-    "xurls | dmenu -l 10 | xclip -selection clipboard",
+    "xurls | rofi -dmenu -l 10 -width 700 -p \"Links\" | xclip -selection clipboard",
     "externalpipe", NULL };
 
 static Shortcut shortcuts[] = {
-	// mask                 keysym          function        argument
-	{ XK_ANY_MOD,           XK_Break,       sendbreak,      {.i =  0} },
-	{ ControlMask,          XK_Print,       toggleprinter,  {.i =  0} },
-	{ ShiftMask,            XK_Print,       printscreen,    {.i =  0} },
-	{ XK_ANY_MOD,           XK_Print,       printsel,       {.i =  0} },
-	{ MODKEY|ShiftMask,     XK_Prior,       zoom,           {.f = +1} },
-	{ MODKEY|ShiftMask,     XK_Next,        zoom,           {.f = -1} },
-	{ MODKEY,               XK_Home,        zoomreset,      {.f =  0} },
-	{ ControlMask|ShiftMask,     XK_C,           clipcopy,       {.i =  0} },
-	{ ControlMask|ShiftMask,     XK_V,           clippaste,      {.i =  0} },
-	{ MODKEY|ShiftMask,     XK_P,           selpaste,       {.i =  0} },
-	{ MODKEY,               XK_Num_Lock,    numlock,        {.i =  0} },
-	{ MODKEY|ShiftMask,     XK_I,           iso14755,       {.i =  0} },
-	{ ShiftMask,            XK_Page_Up,     kscrollup,      {.i = -1} },
-	{ ShiftMask,            XK_Page_Down,   kscrolldown,    {.i = -1} },
-	{ MODKEY,               XK_Page_Up,     kscrollup,      {.i = -1} },
-	{ MODKEY,               XK_Page_Down,   kscrolldown,    {.i = -1} },
-	{ MODKEY|ShiftMask,     XK_U,           kscrollup,      {.i = -1} },
-	{ MODKEY|ShiftMask,     XK_D,           kscrolldown,    {.i = -1} },
-	{ MODKEY,               XK_k,           kscrollup,      {.i =  1} },
-	{ MODKEY,               XK_j,           kscrolldown,    {.i =  1} },
-	{ MODKEY,               XK_Up,          kscrollup,      {.i =  1} },
-	{ MODKEY,               XK_Down,        kscrolldown,    {.i =  1} },
-	{ MODKEY|ShiftMask,     XK_K,           zoom,           {.f = +1} },
-	{ MODKEY|ShiftMask,     XK_J,           zoom,           {.f = -1} },
-	{ MODKEY|ControlMask,     XK_Up,          zoom,           {.f = +1} },
-	{ MODKEY|ControlMask,     XK_Down,        zoom,           {.f = -1} },
+	// mask                     keysym          function        argument
+	{ XK_ANY_MOD,               XK_Break,       sendbreak,      {.i =  0} },
+	{ ControlMask,              XK_Print,       toggleprinter,  {.i =  0} },
+	{ ShiftMask,                XK_Print,       printscreen,    {.i =  0} },
+	{ XK_ANY_MOD,               XK_Print,       printsel,       {.i =  0} },
+	{ MODKEY|ShiftMask,         XK_Prior,       zoom,           {.f = +1} },
+	{ MODKEY|ShiftMask,         XK_Next,        zoom,           {.f = -1} },
+	{ MODKEY,                   XK_Home,        zoomreset,      {.f =  0} },
+	{ ControlMask|ShiftMask,    XK_C,           clipcopy,       {.i =  0} },
+	{ ControlMask|ShiftMask,    XK_V,           clippaste,      {.i =  0} },
+	{ MODKEY|ShiftMask,         XK_P,           selpaste,       {.i =  0} },
+	{ MODKEY|ShiftMask,         XK_I,           iso14755,       {.i =  0} },
+	{ MODKEY|ShiftMask,         XK_U,           kscrollup,      {.i = -1} },
+	{ MODKEY|ShiftMask,         XK_D,           kscrolldown,    {.i = -1} },
+	{ MODKEY,                   XK_k,           kscrollup,      {.i =  1} },
+	{ MODKEY,                   XK_j,           kscrolldown,    {.i =  1} },
+	{ MODKEY|ShiftMask,         XK_K,           zoom,           {.f = +1} },
+	{ MODKEY|ShiftMask,         XK_J,           zoom,           {.f = -1} },
+  { MODKEY|ShiftMask,         XK_L,           externalpipe,   {.v = copyurlcmd} },
 };
-
-/*
- * Special keys (change & recompile st.info accordingly)
- *
- * Mask value:
- * * Use XK_ANY_MOD to match the key no matter modifiers state
- * * Use XK_NO_MOD to match the key alone (no modifiers)
- * appkey value:
- * * 0: no value
- * * > 0: keypad application mode enabled
- * *   = 2: term.numlock = 1
- * * < 0: keypad application mode disabled
- * appcursor value:
- * * 0: no value
- * * > 0: cursor application mode enabled
- * * < 0: cursor application mode disabled
- * crlf value
- * * 0: no value
- * * > 0: crlf mode is enabled
- * * < 0: crlf mode is disabled
- *
- * Be careful with the order of the definitions because st searches in
- * this table sequentially, so any XK_ANY_MOD must be in the last
- * position for a key.
- */
 
 /*
  * If you want keys other than the X11 function keys (0xFD00 - 0xFFFF)
