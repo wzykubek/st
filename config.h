@@ -211,7 +211,9 @@ MouseKey mkeys[] = {
 };
 
 static char *copyurlcmd[] = { "/bin/sh", "-c",
-    "xurls | rofi -dmenu -l 10 -width 700 -p \"Links\" | xclip -selection clipboard",
+    "xurls | rofi -dmenu -l 10 -width 700 -p \"Copy link\" | xclip -selection clipboard",
+    "externalpipe", NULL };
+static char *openurlcmd[] = { "/bin/sh", "-c", "linkhandler $(xurls | rofi -dmenu -l 10 -width 700 -p \"Open link\")",
     "externalpipe", NULL };
 
 static Shortcut shortcuts[] = {
@@ -233,6 +235,7 @@ static Shortcut shortcuts[] = {
 	{ MODKEY,                   XK_j,           kscrolldown,    {.i =  1} },
 	{ MODKEY|ShiftMask,         XK_K,           zoom,           {.f = +1} },
 	{ MODKEY|ShiftMask,         XK_J,           zoom,           {.f = -1} },
+  { MODKEY,                   XK_l,           externalpipe,   {.v = openurlcmd} },
   { MODKEY|ShiftMask,         XK_L,           externalpipe,   {.v = copyurlcmd} },
 };
 
